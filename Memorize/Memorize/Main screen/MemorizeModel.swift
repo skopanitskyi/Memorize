@@ -10,17 +10,21 @@ import Foundation
 struct MemorizeModel<CardContent> {
     public var cards: [Card] = []
     
-    init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
-        for index in 0..<numberOfPairsOfCards {
-            let content = cardContentFactory(index)
+    init(numberOfPairsOfCards: Int, cardContentFactory: () -> CardContent) {
+        for _ in 0..<numberOfPairsOfCards {
+            let content = cardContentFactory()
             let card = Card(content: content)
-            cards.append(card)
-            cards.append(card)
+            cards.insert(card, at: getIndexForInsertCard())
+            cards.insert(card, at: getIndexForInsertCard())
         }
     }
     
     public func choose(card: Card) {
         print(card)
+    }
+    
+    private func getIndexForInsertCard() -> Int {
+        return cards.isEmpty ? 0 : Int.random(in: 0..<cards.count)
     }
     
     struct Card: Identifiable {

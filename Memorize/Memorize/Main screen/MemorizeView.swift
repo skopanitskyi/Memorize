@@ -16,11 +16,12 @@ struct MemorizeView: View {
             ForEach(viewModel.cards) { card in
                 CardView(card: card)
                     .onTapGesture(perform: { viewModel.choose(card: card) })
+                    .aspectRatio(0.75, contentMode: .fit)
             }
         }
         .padding()
         .foregroundColor(.orange)
-        .font(.largeTitle)
+        .font(viewModel.cards.count <= 4 ? .largeTitle : .body)
     }
 }
 
@@ -36,6 +37,7 @@ struct CardView: View {
             } else {
                 RoundedRectangle(cornerRadius: 10).fill()
             }
+            
         }
     }
 }
