@@ -13,14 +13,16 @@ struct MemorizeModel<CardContent> {
     init(numberOfPairsOfCards: Int, cardContentFactory: () -> CardContent) {
         for _ in 0..<numberOfPairsOfCards {
             let content = cardContentFactory()
-            let card = Card(content: content)
-            cards.insert(card, at: getIndexForInsertCard())
-            cards.insert(card, at: getIndexForInsertCard())
+            let firstCard = Card(content: content)
+            let secondCard = Card(content: content)
+            cards.insert(firstCard, at: getIndexForInsertCard())
+            cards.insert(secondCard, at: getIndexForInsertCard())
         }
     }
     
-    public func choose(card: Card) {
-        print(card)
+    public mutating func choose(card: Card) {
+        guard let index = cards.firstIndex(where: { $0.id == card.id }) else { return }
+        cards[index].isFaceUp = !cards[index].isFaceUp
     }
     
     private func getIndexForInsertCard() -> Int {

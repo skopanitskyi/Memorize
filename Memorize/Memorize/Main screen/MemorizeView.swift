@@ -7,21 +7,26 @@
 
 import SwiftUI
 
+private enum MemorizeViewConstants {
+    static let cornerRadius: CGFloat = 10
+    static let strokeLineWidth: CGFloat = 3
+    static let fontScaleFactor: CGFloat = 0.75
+}
+
 struct MemorizeView: View {
     
-    public let viewModel: MemorizeViewModel
+   @ObservedObject public var viewModel: MemorizeViewModel
     
     var body: some View {
         HStack {
             ForEach(viewModel.cards) { card in
                 CardView(card: card)
                     .onTapGesture(perform: { viewModel.choose(card: card) })
-                    .aspectRatio(0.75, contentMode: .fit)
+                    .aspectRatio(2/3, contentMode: .fit)
             }
         }
         .padding()
         .foregroundColor(.orange)
-        .font(viewModel.cards.count <= 4 ? .largeTitle : .body)
     }
 }
 
@@ -29,15 +34,21 @@ struct CardView: View {
     var card: MemorizeModel<String>.Card
     
     var body: some View {
-        ZStack {
-            if card.isFaceUp {
-                RoundedRectangle(cornerRadius: 10).fill(Color.white)
-                RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 3)
-                Text(card.content)
-            } else {
-                RoundedRectangle(cornerRadius: 10).fill()
+        GeometryReader { geometry in
+            ZStack {
+                if card.isFaceUp {
+                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
+                        .fill(Color.white)
+                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
+                        .stroke(lineWidth: MemorizeViewConstants.strokeLineWidth)
+                    Text(card.content)
+                } else {
+                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
+                        .fill()
+                }
             }
-            
+            .font(Font.system(size: min(geometry.size.width,
+                                        geometry.size.height) * MemorizeViewConstants.fontScaleFactor))
         }
     }
 }

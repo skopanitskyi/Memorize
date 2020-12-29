@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
-class MemorizeViewModel {
+class MemorizeViewModel: ObservableObject {
     
-    private var memorizeModel = MemorizeViewModel.createMemorizeModel()
+   @Published private var memorizeModel = MemorizeViewModel.createMemorizeModel()
     
     public var cards: [MemorizeModel<String>.Card] {
         return memorizeModel.cards
