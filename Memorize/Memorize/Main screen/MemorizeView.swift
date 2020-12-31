@@ -15,15 +15,13 @@ private enum MemorizeViewConstants {
 
 struct MemorizeView: View {
     
-   @ObservedObject public var viewModel: MemorizeViewModel
+    @ObservedObject public var viewModel: MemorizeViewModel
     
     var body: some View {
-        HStack {
-            ForEach(viewModel.cards) { card in
-                CardView(card: card)
-                    .onTapGesture(perform: { viewModel.choose(card: card) })
-                    .aspectRatio(2/3, contentMode: .fit)
-            }
+        Grid(viewModel.cards) { card in
+            CardView(card: card)
+                .onTapGesture(perform: { viewModel.choose(card: card) })
+                .padding()
         }
         .padding()
         .foregroundColor(.orange)
