@@ -25,14 +25,11 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
     
     private func body(for layout: GridLayout) -> some View {
         ForEach(items) { item in
-            body(for: item, in: layout)
+            if let index = items.firstIndex(where: { $0.id == item.id }) {
+                viewForItem(item)
+                    .frame(width: layout.itemSize.width, height: layout.itemSize.height)
+                    .position(layout.location(ofItemAt: index))
+            }
         }
-    }
-    
-    private func body(for item: Item, in layout: GridLayout) -> some View {
-        let index = items.firstIndex(where: { $0.id == item.id })
-        return viewForItem(item)
-            .frame(width: layout.size.width, height: layout.size.height)
-            .position(layout.location(ofItemAt: index!))
     }
 }
