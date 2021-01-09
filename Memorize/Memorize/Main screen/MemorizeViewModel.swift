@@ -10,16 +10,25 @@ import SwiftUI
 
 class MemorizeViewModel: ObservableObject {
     
-   @Published private var memorizeModel = MemorizeViewModel.createMemorizeModel()
+    
+    @Published private var memorizeModel = MemorizeModel<String>(cards: Test.shared.cards)
+    
+    @Published private(set) var score = 0
     
     private var openCardsIndex: [Int] = []
+    
+    private var flipedCards: [MemorizeModel<String>.Card] = []
     
     public var cards: [MemorizeModel<String>.Card] {
         return memorizeModel.cards
     }
     
-    private static var numberOfPairsOfCards: Int {
-        return Int.random(in: 2...5)
+    public var cardForegroundColor: Color {
+        return Test.shared.drawColor
+    }
+    
+    public var themeName: String {
+        return Test.shared.themeName
     }
     
     public func choose(card: MemorizeModel<String>.Card) {
@@ -30,34 +39,33 @@ class MemorizeViewModel: ObservableObject {
         }
     }
     
+    public func newGame() {
+        Test.shared.test()
+        score = 0
+        memorizeModel = MemorizeModel<String>(cards: Test.shared.cards)
+    }
+    
     private func flipAndUpdateCard(with index: Int) {
         memorizeModel.cards[index].isFaceUp = true
         openCardsIndex.append(index)
         
+        
         if openCardsIndex.count == 2 {
             if cards[openCardsIndex[0]].content == cards[openCardsIndex[1]].content {
                 openCardsIndex.forEach { memorizeModel.cards[$0].isMatched = true }
+                score += 2
+            } else {
+                openCardsIndex.forEach { index in
+                    if flipedCards.contains(cards[index]) {
+                        score -= 1
+                    }
+                }
+                openCardsIndex.filter { !flipedCards.contains(cards[$0]) }.forEach { flipedCards.append(cards[$0])}
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.openCardsIndex.forEach { self.memorizeModel.cards[$0].isFaceUp = false }
                 self.openCardsIndex.removeAll()
             }
         }
-    }
-    
-    private static func createMemorizeModel() -> MemorizeModel<String> {
-        var emojis = [Int](0x1F601...0x1F64F).compactMap { UnicodeScalar($0) }.map { String($0) }
-        var cards: [MemorizeModel<String>.Card] = []
-        for _ in 0...numberOfPairsOfCards {
-            let index = Int.random(in: 0..<emojis.count)
-            let emoji = emojis.remove(at: index)
-            cards.insert(MemorizeModel<String>.Card(content: emoji), at: randomIndex(for: cards))
-            cards.insert(MemorizeModel<String>.Card(content: emoji), at: randomIndex(for: cards))
-        }
-        return MemorizeModel<String>(cards: cards)
-    }
-    
-    private static func randomIndex(for cards: [MemorizeModel<String>.Card]) -> Int {
-        return cards.isEmpty ? 0 : Int.random(in: 0..<cards.count)
     }
 }

@@ -18,13 +18,26 @@ struct MemorizeView: View {
     @ObservedObject public var viewModel: MemorizeViewModel
     
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card)
-                .onTapGesture(perform: { viewModel.choose(card: card) })
+        VStack {
+            HStack(alignment: .firstTextBaseline) {
+                Text(viewModel.themeName)
+                    .foregroundColor(viewModel.cardForegroundColor)
+                Spacer()
+                Text("Score: \(viewModel.score)")
+                    .foregroundColor(viewModel.cardForegroundColor)
+            }
+            .padding()
+            Grid(viewModel.cards) { card in
+                CardView(card: card)
+                    .onTapGesture(perform: { viewModel.choose(card: card) })
+                    .padding()
+            }
+            .padding()
+            .foregroundColor(viewModel.cardForegroundColor)
+            Button("Start new game", action: viewModel.newGame)
+                .foregroundColor(viewModel.cardForegroundColor)
                 .padding()
         }
-        .padding()
-        .foregroundColor(.orange)
     }
 }
 
@@ -42,8 +55,8 @@ struct CardView: View {
                     Text(card.content)
                 } else {
                     if !card.isMatched {
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .fill()
+                        RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
+                            .fill()
                     }
                 }
             }
