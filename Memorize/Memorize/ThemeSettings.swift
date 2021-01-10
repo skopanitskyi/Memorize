@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-class Test {
+class ThemeSettings {
     
-    public static let shared = Test()
+    public static let shared = ThemeSettings()
     
     private(set) var themeName: String
     
@@ -25,7 +25,7 @@ class Test {
         cards = createMemorizeModel()
     }
     
-    public func test() {
+    public func changeTheme() {
         theme = MemorizeTheme.getRandomTheme()
         themeName = theme.themeName
         drawColor = theme.drawColor

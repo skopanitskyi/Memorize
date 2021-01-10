@@ -8,9 +8,7 @@
 import SwiftUI
 
 private enum MemorizeViewConstants {
-    static let cornerRadius: CGFloat = 10
-    static let strokeLineWidth: CGFloat = 3
-    static let fontScaleFactor: CGFloat = 0.75
+    static let fontScaleFactor: CGFloat = 0.65
 }
 
 struct MemorizeView: View {
@@ -42,27 +40,33 @@ struct MemorizeView: View {
 }
 
 struct CardView: View {
-    var card: MemorizeModel<String>.Card
+    public let card: MemorizeModel<String>.Card
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                if card.isFaceUp {
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .fill(Color.white)
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .stroke(lineWidth: MemorizeViewConstants.strokeLineWidth)
-                    Text(card.content)
-                } else {
-                    if !card.isMatched {
-                        RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                            .fill()
-                    }
-                }
-            }
-            .font(Font.system(size: min(geometry.size.width,
-                                        geometry.size.height) * MemorizeViewConstants.fontScaleFactor))
+            self.body(for: geometry.size)
         }
+    }
+    
+    @ViewBuilder
+    private func body(for size: CGSize) -> some View {
+        if card.isFaceUp || !card.isMatched {
+            ZStack {
+                Pie(startAngle: Angle(degrees: 0-90),
+                    endAngle: Angle(degrees: 110-90),
+                    clockwise: true)
+                    .opacity(0.4)
+                    .padding(5)
+                Text(card.content)
+                    .font(Font.system(size: fontSize(for: size)))
+                
+            }
+            .cardify(isFaceUp: card.isFaceUp)
+        }
+    }
+    
+    private func fontSize(for size: CGSize) -> CGFloat {
+        return min(size.height, size.width) * MemorizeViewConstants.fontScaleFactor
     }
 }
 

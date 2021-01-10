@@ -11,7 +11,7 @@ import SwiftUI
 class MemorizeViewModel: ObservableObject {
     
     
-    @Published private var memorizeModel = MemorizeModel<String>(cards: Test.shared.cards)
+    @Published private var memorizeModel = MemorizeModel<String>(cards: ThemeSettings.shared.cards)
     
     @Published private(set) var score = 0
     
@@ -24,11 +24,11 @@ class MemorizeViewModel: ObservableObject {
     }
     
     public var cardForegroundColor: Color {
-        return Test.shared.drawColor
+        return ThemeSettings.shared.drawColor
     }
     
     public var themeName: String {
-        return Test.shared.themeName
+        return ThemeSettings.shared.themeName
     }
     
     public func choose(card: MemorizeModel<String>.Card) {
@@ -40,9 +40,11 @@ class MemorizeViewModel: ObservableObject {
     }
     
     public func newGame() {
-        Test.shared.test()
+        ThemeSettings.shared.changeTheme()
         score = 0
-        memorizeModel = MemorizeModel<String>(cards: Test.shared.cards)
+        memorizeModel = MemorizeModel<String>(cards: ThemeSettings.shared.cards)
+        openCardsIndex.removeAll()
+        flipedCards.removeAll()
     }
     
     private func flipAndUpdateCard(with index: Int) {

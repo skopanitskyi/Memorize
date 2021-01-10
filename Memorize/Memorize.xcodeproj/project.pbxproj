@@ -13,9 +13,11 @@
 		5B007D3A2597E90200939459 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B007D392597E90200939459 /* Preview Assets.xcassets */; };
 		5B3F322E25A9D71300314851 /* MemorizeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F322D25A9D71300314851 /* MemorizeTheme.swift */; };
 		5B3F323625A9DEE800314851 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F323525A9DEE800314851 /* Array+Extension.swift */; };
-		5B3F323A25AA225600314851 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F323925AA225600314851 /* Test.swift */; };
+		5B3F323A25AA225600314851 /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F323925AA225600314851 /* ThemeSettings.swift */; };
 		5B5A5B04259E75390098B3DA /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A5B03259E75390098B3DA /* GridLayout.swift */; };
 		5B5A5B07259E757A0098B3DA /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A5B06259E757A0098B3DA /* Grid.swift */; };
+		5BE3CA8725AB86E500619B5B /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE3CA8625AB86E500619B5B /* Pie.swift */; };
+		5BE3CA8A25AB8E1A00619B5B /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE3CA8925AB8E1A00619B5B /* Cardify.swift */; };
 		5BE838A125990AB1003F6DA2 /* MemorizeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE838A025990AB1003F6DA2 /* MemorizeModel.swift */; };
 		5BE838A625990C9E003F6DA2 /* MemorizeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE838A525990C9E003F6DA2 /* MemorizeViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -29,9 +31,11 @@
 		5B007D3B2597E90200939459 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B3F322D25A9D71300314851 /* MemorizeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeTheme.swift; sourceTree = "<group>"; };
 		5B3F323525A9DEE800314851 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
-		5B3F323925AA225600314851 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		5B3F323925AA225600314851 /* ThemeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettings.swift; sourceTree = "<group>"; };
 		5B5A5B03259E75390098B3DA /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		5B5A5B06259E757A0098B3DA /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		5BE3CA8625AB86E500619B5B /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
+		5BE3CA8925AB8E1A00619B5B /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 		5BE838A025990AB1003F6DA2 /* MemorizeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeModel.swift; sourceTree = "<group>"; };
 		5BE838A525990C9E003F6DA2 /* MemorizeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +73,9 @@
 				5B007D322597E90100939459 /* MemorizeApp.swift */,
 				5B3F323525A9DEE800314851 /* Array+Extension.swift */,
 				5B3F322D25A9D71300314851 /* MemorizeTheme.swift */,
-				5B3F323925AA225600314851 /* Test.swift */,
+				5B3F323925AA225600314851 /* ThemeSettings.swift */,
+				5BE3CA8625AB86E500619B5B /* Pie.swift */,
+				5BE3CA8925AB8E1A00619B5B /* Cardify.swift */,
 				5BE838A325990ABB003F6DA2 /* Main screen */,
 				5B007D362597E90200939459 /* Assets.xcassets */,
 				5B007D3B2597E90200939459 /* Info.plist */,
@@ -167,9 +173,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BE3CA8A25AB8E1A00619B5B /* Cardify.swift in Sources */,
+				5BE3CA8725AB86E500619B5B /* Pie.swift in Sources */,
 				5B007D352597E90100939459 /* MemorizeView.swift in Sources */,
 				5BE838A125990AB1003F6DA2 /* MemorizeModel.swift in Sources */,
-				5B3F323A25AA225600314851 /* Test.swift in Sources */,
+				5B3F323A25AA225600314851 /* ThemeSettings.swift in Sources */,
 				5B5A5B04259E75390098B3DA /* GridLayout.swift in Sources */,
 				5B3F322E25A9D71300314851 /* MemorizeTheme.swift in Sources */,
 				5BE838A625990C9E003F6DA2 /* MemorizeViewModel.swift in Sources */,
