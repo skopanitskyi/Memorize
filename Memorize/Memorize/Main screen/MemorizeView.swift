@@ -7,71 +7,108 @@
 
 import SwiftUI
 
-private enum MemorizeViewConstants {
-    static let fontScaleFactor: CGFloat = 0.65
-}
-
 struct MemorizeView: View {
-    
-    @ObservedObject public var viewModel: MemorizeViewModel
-    
-    var body: some View {
-        VStack {
-            HStack(alignment: .firstTextBaseline) {
-                Text(viewModel.themeName)
-                    .foregroundColor(viewModel.cardForegroundColor)
-                Spacer()
-                Text("Score: \(viewModel.score)")
-                    .foregroundColor(viewModel.cardForegroundColor)
-            }
-            .padding()
-            Grid(viewModel.cards) { card in
-                CardView(card: card)
-                    .onTapGesture(perform: { viewModel.choose(card: card) })
-                    .padding()
-            }
-            .padding()
-            .foregroundColor(viewModel.cardForegroundColor)
-            Button("Start new game", action: viewModel.newGame)
-                .foregroundColor(viewModel.cardForegroundColor)
-                .padding()
+  
+  private let emojis = ["😀", "😃", "😄", "😁", "😆", "😅", "☺️", "😊", "😇", "😌", "😉", "😘", "🙂", "🙃", "😜","🤨","😎","🤓","🧐","🤩","🥳","😏","😒","😕"]
+  
+  @State private var emojiCount = 6
+  
+  var body: some View {
+    VStack {
+      Text("Memorize!")
+        .font(.largeTitle)
+      ScrollView {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+          ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+            CardView(content: emoji)
+          }
         }
+      }
+      ControlButtons {
+        if emojiCount > 1 {
+          emojiCount -= 1
+        }
+      } addHandler: {
+        if emojis.count > emojiCount {
+          emojiCount += 1
+        }
+      }
     }
+    .padding(.horizontal)
+  }
 }
 
 struct CardView: View {
-    public let card: MemorizeModel<String>.Card
-    
-    var body: some View {
-        GeometryReader { geometry in
-            self.body(for: geometry.size)
-        }
+  
+  @State private var isUp = true
+  
+  private let content: String
+  
+  init(content: String) {
+    self.content = content
+  }
+  
+  var body: some View {
+    ZStack {
+      RoundedRectangle(cornerRadius: 25)
+        .fill()
+        .foregroundColor(.white)
+      RoundedRectangle(cornerRadius: 25)
+        .strokeBorder(lineWidth: 3)
+      Text(content)
+        .font(.largeTitle)
+      RoundedRectangle(cornerRadius: 25)
+        .fill(isUp ? .clear : .red)
     }
-    
-    @ViewBuilder
-    private func body(for size: CGSize) -> some View {
-        if card.isFaceUp || !card.isMatched {
-            ZStack {
-                Pie(startAngle: Angle(degrees: 0-90),
-                    endAngle: Angle(degrees: 110-90),
-                    clockwise: true)
-                    .opacity(0.4)
-                    .padding(5)
-                Text(card.content)
-                    .font(Font.system(size: fontSize(for: size)))
-                
-            }
-            .cardify(isFaceUp: card.isFaceUp)
-        }
+    .foregroundColor(.red)
+    .aspectRatio(2/3, contentMode: .fit)
+    .onTapGesture {
+      withAnimation {
+        isUp.toggle()
+      }
     }
-    
-    private func fontSize(for size: CGSize) -> CGFloat {
-        return min(size.height, size.width) * MemorizeViewConstants.fontScaleFactor
+  }
+}
+
+struct ControlButtons: View {
+  
+  private let deleteHandler: (() -> Void)?
+  private let addHandler: (() -> Void)?
+  
+  init(deleteHandler: (() -> Void)?, addHandler: (() -> Void)?) {
+    self.deleteHandler = deleteHandler
+    self.addHandler = addHandler
+  }
+  
+  var body: some View {
+    HStack {
+      deleteButton
+      Spacer()
+      addButton
     }
+    .font(.largeTitle)
+  }
+  
+  private var deleteButton: some View {
+    Button {
+      deleteHandler?()
+    } label: {
+      Image(systemName: "minus.circle")
+    }
+  }
+  
+  private var addButton: some View {
+    Button {
+      addHandler?()
+    } label: {
+      Image(systemName: "plus.circle")
+    }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MemorizeView(viewModel: MemorizeViewModel())
-    }
+  static var previews: some View {
+    MemorizeView()
+      .preferredColorScheme(.dark)
+  }
 }
