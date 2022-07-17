@@ -7,54 +7,108 @@
 
 import SwiftUI
 
-private enum MemorizeViewConstants {
-    static let cornerRadius: CGFloat = 10
-    static let strokeLineWidth: CGFloat = 3
-    static let fontScaleFactor: CGFloat = 0.75
-}
-
 struct MemorizeView: View {
-    
-    @ObservedObject public var viewModel: MemorizeViewModel
-    
-    var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card)
-                .onTapGesture(perform: { viewModel.choose(card: card) })
-                .padding()
+  
+  private let emojis = ["😀", "😃", "😄", "😁", "😆", "😅", "☺️", "😊", "😇", "😌", "😉", "😘", "🙂", "🙃", "😜","🤨","😎","🤓","🧐","🤩","🥳","😏","😒","😕"]
+  
+  @State private var emojiCount = 6
+  
+  var body: some View {
+    VStack {
+      Text("Memorize!")
+        .font(.largeTitle)
+      ScrollView {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+          ForEach(emojis[0..<emojiCount], id: \.self) { emoji in
+            CardView(content: emoji)
+          }
         }
-        .padding()
-        .foregroundColor(.orange)
+      }
+      ControlButtons {
+        if emojiCount > 1 {
+          emojiCount -= 1
+        }
+      } addHandler: {
+        if emojis.count > emojiCount {
+          emojiCount += 1
+        }
+      }
     }
+    .padding(.horizontal)
+  }
 }
 
 struct CardView: View {
-    var card: MemorizeModel<String>.Card
-    
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                if card.isFaceUp {
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .fill(Color.white)
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .stroke(lineWidth: MemorizeViewConstants.strokeLineWidth)
-                    Text(card.content)
-                } else {
-                    if !card.isMatched {
-                    RoundedRectangle(cornerRadius: MemorizeViewConstants.cornerRadius)
-                        .fill()
-                    }
-                }
-            }
-            .font(Font.system(size: min(geometry.size.width,
-                                        geometry.size.height) * MemorizeViewConstants.fontScaleFactor))
-        }
+  
+  @State private var isUp = true
+  
+  private let content: String
+  
+  init(content: String) {
+    self.content = content
+  }
+  
+  var body: some View {
+    ZStack {
+      RoundedRectangle(cornerRadius: 25)
+        .fill()
+        .foregroundColor(.white)
+      RoundedRectangle(cornerRadius: 25)
+        .strokeBorder(lineWidth: 3)
+      Text(content)
+        .font(.largeTitle)
+      RoundedRectangle(cornerRadius: 25)
+        .fill(isUp ? .clear : .red)
     }
+    .foregroundColor(.red)
+    .aspectRatio(2/3, contentMode: .fit)
+    .onTapGesture {
+      withAnimation {
+        isUp.toggle()
+      }
+    }
+  }
+}
+
+struct ControlButtons: View {
+  
+  private let deleteHandler: (() -> Void)?
+  private let addHandler: (() -> Void)?
+  
+  init(deleteHandler: (() -> Void)?, addHandler: (() -> Void)?) {
+    self.deleteHandler = deleteHandler
+    self.addHandler = addHandler
+  }
+  
+  var body: some View {
+    HStack {
+      deleteButton
+      Spacer()
+      addButton
+    }
+    .font(.largeTitle)
+  }
+  
+  private var deleteButton: some View {
+    Button {
+      deleteHandler?()
+    } label: {
+      Image(systemName: "minus.circle")
+    }
+  }
+  
+  private var addButton: some View {
+    Button {
+      addHandler?()
+    } label: {
+      Image(systemName: "plus.circle")
+    }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MemorizeView(viewModel: MemorizeViewModel())
-    }
+  static var previews: some View {
+    MemorizeView()
+      .preferredColorScheme(.dark)
+  }
 }

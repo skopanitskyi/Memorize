@@ -10,7 +10,7 @@ import Foundation
 struct MemorizeModel<CardContent> where CardContent: Comparable {
     public var cards: [Card] = []
     
-    struct Card: Identifiable {
+    struct Card: Identifiable, Equatable {
         public var id: UUID = UUID()
         public var isFaceUp: Bool = false
         public var isMatched: Bool = false
